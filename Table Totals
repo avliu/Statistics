@@ -1,0 +1,82 @@
+import java.util.Scanner;
+
+public class tableTotals {
+
+	public static void main(String[] args) {
+		
+		printTable(returnTotals(makeTable()));	
+		
+	}
+	
+	//asks user to input table dimensions and values
+	public static int[][] makeTable () {
+		
+		Scanner sc0 = new Scanner(System.in);
+
+		System.out.print("Number of rows: ");
+		int rows = sc0.nextInt();
+		
+		System.out.print("Number of columns: ");
+		int cols = sc0.nextInt();
+		
+		int [][] table = new int [rows][cols];
+		
+		for (int r = 0; r<rows; r++) {
+			for (int c = 0; c<cols; c++) {
+				System.out.print("Value for (" + (r+1) + "," + (c+1) + "): ");
+				Scanner sc1 = new Scanner(System.in);
+				table[r][c] = sc1.nextInt();
+			}
+		}
+		
+		return table;
+		
+	}
+	
+	//places row totals to the right of row, column totals under column, table total in lower left corner
+	public static int[][] returnTotals (int[][] table) {
+	
+		int total = 0;
+		int rows = table.length;
+		int cols = table[0].length;
+		int[][] returnTable = new int[rows+1][cols+1];
+				
+		for (int r = 0; r<rows; r++) {
+			int rowTotal = 0;
+			for (int c = 0; c<cols; c++) {
+				returnTable[r][c] = table[r][c];
+				rowTotal = rowTotal + table[r][c];
+			}
+			returnTable[r][cols] = rowTotal;
+			total = total + rowTotal;
+		}
+		
+		for (int c = 0; c<cols; c++) {
+			int colTotal = 0;
+			for (int r = 0; r<rows; r++) {
+				returnTable[r][c] = table[r][c];
+				colTotal = colTotal + table[r][c];
+			}
+			returnTable[rows][c] = colTotal;
+		}
+		
+		returnTable[rows][cols] = total;
+		
+		return returnTable;
+		
+	}
+	
+	//prints the table
+	public static void printTable (int[][] table) {
+		
+		int rows = table.length;
+		int cols = table[0].length;
+		for (int r = 0; r<rows; r++) {
+			for (int c = 0; c<cols; c++) {
+				System.out.print(table[r][c] + " ");
+			}
+			System.out.println("");
+		}
+		
+	}
+}
