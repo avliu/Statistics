@@ -1,0 +1,88 @@
+package statistics;
+
+import java.util.Scanner;
+
+public class PMF {
+
+public static void main(String[] args) {
+		
+		double[][] PMF = makePMF();
+		printTable(makeCDF(PMF));
+		System.out.println("mean of X = " + returnMu(PMF));
+		
+	}
+	
+  //asks user for x and f(x) values needed to create a PMF table
+	public static double[][] makePMF () {
+		
+		Scanner sc0 = new Scanner(System.in);
+		System.out.print("Number of columns: ");
+		int cols = sc0.nextInt();
+		
+		double [][] table = new double [2][cols];
+		
+		for (int c = 0; c<cols; c++) {
+			System.out.print("Value for x" + (c+1) + ": ");
+			Scanner sc1 = new Scanner(System.in);
+			table[0][c] = sc1.nextDouble();
+		}
+		
+		for (int c = 0; c<cols; c++) {
+			System.out.print("Value for f(" + table[0][c] + "): ");
+			Scanner sc1 = new Scanner(System.in);
+			table[1][c] = sc1.nextDouble();
+		}
+		
+		return table;
+		
+	}
+	
+  //makes CDF table from PMF table by adding cumulative f(x) values in a new row
+	public static double[][] makeCDF(double[][] PMF){
+		
+		double total = 0.0;
+		int rows = PMF.length;
+		int cols = PMF[0].length;
+		double[][] CDF = new double[rows+1][cols];
+		
+		for (int r = 0; r<2; r++) {
+			for (int c = 0; c<cols; c++) {
+				CDF[r][c] = PMF[r][c];
+			}
+		}
+		
+		for (int c = 0; c<cols; c++) {
+			total += CDF[1][c];
+			CDF[2][c] = total;
+		}
+		
+		return CDF;
+		
+	}
+	
+  //finds mean of the table by multiplying x by f(x) for each column and adding them
+	public static double returnMu (double[][] table) {
+		
+		double answer = 0;
+		for (int c = 0; c<table[0].length; c++) {
+			answer += table[0][c] * table[1][c];
+		}
+		return answer;
+		
+	}
+	
+  //prints table
+	public static void printTable (double[][] table) {
+		
+		int rows = table.length;
+		int cols = table[0].length;
+		for (int r = 0; r<rows; r++) {
+			for (int c = 0; c<cols; c++) {
+				System.out.print(table[r][c] + "   ");
+			}
+			System.out.println("");
+		}
+		
+	}
+	
+}
