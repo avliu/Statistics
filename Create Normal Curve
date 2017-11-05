@@ -1,0 +1,27 @@
+package statistics;
+import org.apache.commons.math3.distribution.*;
+
+public class normalCurve {
+	
+	//imported from Apache	
+	NormalDistribution n = new NormalDistribution();
+	
+	//returns axis number given a desired area under the normal curve 
+	public double getNormalAxisNumber(double targetProb, double minAxis, double maxAxis) {
+		double midAxis = minAxis+(maxAxis-minAxis)/2;
+		double midProb = n.cumulativeProbability(midAxis);
+		if(Math.abs(targetProb-midProb)<.00005) {
+			return midAxis;
+		}
+		else {
+			if(targetProb>midProb) {
+				return getNormalAxisNumber(targetProb, midAxis, maxAxis);
+			}
+			else {
+				return getNormalAxisNumber(targetProb, minAxis, midAxis);
+			}
+		}
+	}
+
+	
+}
